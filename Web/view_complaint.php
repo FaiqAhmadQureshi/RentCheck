@@ -3,16 +3,15 @@
 session_start();
 
 include("connection.php");
-include("functions.php");
-
-//$user_data = check_login($con);
+$query = "select * from complaint";
+$result=mysqli_query($con,$query);
 
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<title>Rent History - RentCheck</title>
+<title>View Complaint - RentCheck</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="CSS\index.css">
@@ -51,7 +50,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
         <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-content">
-          <a href="index.php">SignOut</a>
+          <a href="logout.php">SignOut</a>
         </div>
       </div>
   </div>
@@ -64,13 +63,22 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   <tr>
     <th>Owner ID</th>
     <th>Tenant ID</th>
+    <th>Property ID</th>
     <th>Subject</th>
   </tr>
-  <tr>
-    <td>Owner ID</td>
-    <td>Tenant ID</td>
-    <td>Issue With ...</td>
-  </tr>
+<?php
+  while($rows=mysqli_fetch_assoc($result))
+  {
+    ?>
+    <tr>
+    <td><?php echo $rows['owner_id']; ?></td>
+    <td><?php echo $rows['tenant_id']; ?></td>
+    <td><?php echo $rows['property_id']; ?></td>
+    <td><?php echo $rows['subject']; ?></td>
+    </tr>
+    <?php
+  }
+  ?>
 </table>
 
 <!-- Footer -->
