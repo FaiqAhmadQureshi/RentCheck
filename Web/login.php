@@ -2,41 +2,29 @@
 
   session_start();
 
-  include("connection.php");
-  include("functions.php");
-
-  if($_SERVER['REQUEST_METHOD'] == "POST")
+  if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-      $user_name = $_POST ['user_name'];
-      $password = $_POST ['password'];
+  include("connection.php");
 
-      if(!empty($username) && !empty($password) && !is_numeric($user_name))
-      {
-          $query = "select * from users where user_name = '$user_name' limit 1";
+  $user_name = $_POST['user_name'];
+  $password = $_POST['password'];
 
-          $result = mysqli_query($con, $query);
+  $user_name = stripcslashes($user_name);
+  $password = stripcslashes($password);
+  $user_name = mysqli_real_escape_string($con ,$user_name);
+  $password = mysqli_real_escape_string($con , $password);
 
-          if($result)
-          {
-              if($result && mysqli_num_rows($result) > 0){
-                 $user_data = mysqli_fetch_assoc($result);
-                 
-                 if($user_data['password'] === $password)
-                 {
-                    $_SESSION['user_id'] = $user_data['user_id'];
-                    header("Location: index.php");
-                    die;
-                 }                 
-              }
-          }
-
-
-      }
-      else{
-          echo "Please Enter Valid Information";
-      }
-  }
-
+  $result = mysqli_query($con ,"select * from users where user_name = '$user_name' and password = '$password'")
+            or die("Failed to query database" .sql_error());
+  $row = mysqli_fetch_array($result);
+  if($row['user_name'] == $user_name && $row['password'] == $password){
+  header('Location: index.php');
+  die; 
+}         
+else{
+  echo "Please Enter Valid Information";
+}
+}
 ?>
 
 <html>
@@ -71,24 +59,22 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
   <header style="padding:18px 16px">
 
-    <form>
+    <form method="POST">
         <div class="imgcontainer">
           <h1 class="fname">Login</h1>
           <img src="IMG\pngfuel.com.png" alt="Avatar" class="avatar">
         </div>
         <div class="logincontainer">
-          <label for="uname"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="user_name">
-      
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="password">
-      
-          <input id="button" type="submit" value="Login">
+          <label for="user_name"><b>Username</b></label>
+          <input id="user_name" type = "text" name = "user_name" class = "box"/>
+
+          <label for="password"><b>Password</b></label>
+          <input id="password" type = "password" name = "password" class = "box" />   
+             
+          <input type="submit" name="login" value="Login" class="btn btn-primary">
+          
         </div>
       
-        <div class="logincontainer" style="background-color:#f1f1f1">
-          <button type="button" class="cancelbtn">Forgot password?</button>
-        </div>
       </form>
 
     </header>
