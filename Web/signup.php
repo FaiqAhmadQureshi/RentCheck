@@ -5,29 +5,30 @@
         include("connection.php");
         include("functions.php");
 
-        if($_SERVER['REQUEST_METHOD'] == "POST")
-        {
+        $query = "select * from complaint";
+
+$result = mysqli_query($con,$query); 
+
+if(isset($_POST['signup']))
+{
             $user_name = $_POST ['user_name'];
             $password = $_POST ['password'];
+            
 
-            if(!empty($username) && !empty($password) && !is_numeric($user_name))
-            {
-                $user_id = random_num(20);
-                $query = "insert into users(user_id,user_name,password) values ('$user_id' , '$user_name' , '$password')";
-                mysqli_query($con, $query);
-
-                header("Location: login.php");
-                die;
-            }
-            else{
-                echo "Please Enter Valid Information";
-            }
-        }
-
-
+            $query = "insert into users set user_name='$user_name', password='$password'";
+	
+    if($con->query($query)===TRUE){
+        header("location:login.php");
+        exit;
+    }
+    else
+    {
+        echo mysqli_error();
+    }    	
+}
 ?>
 
-<html>
+<!DOCTYPE html>
     <title>SignUp - RentCheck</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,20 +58,26 @@
 
 <!--Header-->
   <header style="padding:128px 16px">
-    <form style="border:1px solid #ccc">
+    <form style="border:1px solid #ccc" method="post">
       <div class="container">
         <h1 class="fname">Sign Up</h1>
         <div class="imgcontainer">
           <img src="IMG\pngfuel.com.png" alt="Avatar" class="avatar">
         </div>
-        <p>Please fill in this form to create an account.</p>
+        <label>Please fill in this form to create an account.</label>
         <hr>
-    
-        <input id="text" type="text" name="user_name"> <br><br>
-    
-        <input id="text" type="password" name="password"> <br><br>
-        
-        <input id="button" type="submit" value="Signup"></button> <br><br>
+
+    <form method="POST">
+
+    <label for="username" class="fname">Enter Username</label>
+    <input type="text" name="user_name" value="<?php echo $row['user_name'] ?>" placeholder="Username">
+
+    <label for="password" class="fname">Enter Password</label>
+    <input type="text" name="password" value="<?php echo $row['password'] ?>" placeholder="Password">
+
+    <input type="submit" name="signup" value="Signup" class="btn btn-primary" />
+
+  </form>
 
       </div>
     </form>
