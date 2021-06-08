@@ -3,9 +3,8 @@
 session_start();
 
 include("connection.php");
-include("functions.php");
-
-//$user_data = check_login($con);
+$query = "select * from rent_history";
+$result=mysqli_query($con,$query);
 
 
 ?>
@@ -60,68 +59,26 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
 <!-- Header -->
 <h2 class= "header">Rent History</h2>
-
 <table>
   <tr>
     <th>PropertyID</th>
+    <th>TenantID</th>
     <th>Due Date</th>
     <th>Status</th>
   </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
-  <tr>
-    <td>PID#000</td>
-    <td>DD/MM/YYYY</td>
-    <td>Paid/Unpaid</td>
-  </tr>
+  <?php
+  while($rows=mysqli_fetch_assoc($result))
+  {
+    ?>
+    <tr>
+    <td><?php echo $rows['property_id']; ?></td>
+    <td><?php echo $rows['tenant_id']; ?></td>
+    <td><?php echo $rows['due_date']; ?></td>
+    <td><?php echo $rows['status']; ?></td>
+    </tr>
+    <?php
+  }
+  ?>
 </table>
 
 <!-- Footer -->
