@@ -3,16 +3,35 @@
 session_start();
 
 include("connection.php");
-include("functions.php");
 
-//$user_data = check_login($con);
+$query = "select * from complaint";
 
+$result = mysqli_query($con,$query); 
 
+if(isset($_POST['submit']))
+{
+  $owner_id = $_POST["owner_id"];
+  $tenant_id = $_POST["tenant_id"];
+  $property_id = $_POST["property_id"];
+  $subject = $_POST["subject"];
+  
+	
+    $query = "insert into complaint set owner_id='$owner_id', tenant_id='$tenant_id', property_id='$property_id', subject='$subject'";
+	
+    if($con->query($query)===TRUE){
+        header("location:view_complaint.php");
+        exit;
+    }
+    else
+    {
+        echo mysqli_error();
+    }    	
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<title>Rent History - RentCheck</title>
+<title>File A Complaint - RentCheck</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="CSS\index.css">
@@ -51,7 +70,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
         <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-content">
-          <a href="index.php">SignOut</a>
+          <a href="logout.php">SignOut</a>
         </div>
       </div>
   </div>
@@ -63,29 +82,21 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
 <!-- First Grid -->
 <div class="container">
-  <form action="file_complaint.php" method="POST">
+  <form method="POST">
 
     <label for="ownerid" class="fname">Owner Id</label>
-    <input type="text" id="fname" name="ownerid" placeholder="Owner id..">
+    <input type="text" name="owner_id" value="<?php echo $row['owner_id'] ?>" placeholder="Owner id..">
 
     <label for="tenantid" class="fname">Tenant Id</label>
-    <input type="text" id="lname" name="tenantid" placeholder="Tenant id..">
+    <input type="text" name="tenant_id" value="<?php echo $row['tenant_id'] ?>" placeholder="Tenant id..">
 
     <label for="propertyid" class="fname">Property ID</label>
-    <input type="text" id="lname" name="propertyid" placeholder="Property id..">
+    <input type="text"  name="property_id" value="<?php echo $row['property_id'] ?>" placeholder="Property id..">
     
     <label class="fname">Subject</label>
-    <select>
-      <option class="opacity">-- Subject --</option>
-      <option value="australia">Property Damage</option>
-      <option value="canada">Water Maintenance</option>
-      <option value="usa">Electricity Maintenance</option>
-    </select>
+    <input type="text" name="subject" value="<?php echo $row['subject'] ?>" placeholder="Subject..">
 
-    <label for="complaint" class="fname">Complaint</label>
-    <textarea id="subject" name="complaint" placeholder="Write something.." style="height:200px"></textarea>
-
-    <input type="submit" class="btn btn-primary" />
+    <input type="submit" name="submit" value="submit" class="btn btn-primary" />
 
   </form>
 </div>
