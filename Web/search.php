@@ -1,12 +1,7 @@
 <?php
 
 session_start();
-
 include("connection.php");
-include("functions.php");
-
-//$user_data = check_login($con);
-
 
 ?>
 
@@ -49,7 +44,7 @@ include("functions.php");
         <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-content">
-          <a href="index.php">SignOut</a>
+          <a href="logout.php">SignOut</a>
         </div>
       </div>
   </div>
@@ -59,19 +54,19 @@ include("functions.php");
 <div class= "container">
   <img class= "head_img" src="IMG\pexels-min-an-1087727.jpg" alt="Front Page" style="opacity: 0.8">
   <div class="s01">
-    <form position: relative;>
+    <form position: relative; action="search_result.php" method="POST">
       <fieldset class="heading">
         <h1>Discover Your Perfect Place</h1>
       </fieldset>
       <div class="inner-form">
         <div class="input-field second-wrap">
-          <input id="search" type="text" placeholder="What are you looking for?" />
+          <input type="text" name="purpose" placeholder="Property For..." />
         </div>
         <div class="input-field third-wrap">
-          <input id="location" type="text" placeholder="Location" />
+          <input type="text" name="location" placeholder="Location" />
         </div>
         <div class="input-field forth-wrap">
-          <button class="btn-search" type="button" onclick="window.location.href='search_result.php'">Search</button>
+          <button type="submit" name="submit-search">Search</button>
         </div>
       </div>
     </form>
@@ -79,4 +74,3 @@ include("functions.php");
     </div>
   </body>
 </html>
-
